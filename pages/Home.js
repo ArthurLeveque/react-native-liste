@@ -1,6 +1,7 @@
 import React, { useState, Component, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue } from "firebase/database";
 
 import ListItem from '../components/ListItem';
 
@@ -32,16 +33,34 @@ const Home = ({navigation}) => {
   const [todoData, setTodoData] = useState('');
 
   const onScreenLoad = async () => {
-    try {
-      const value = await AsyncStorage.getItem('@todo')
-      console.log('là : ' . value)
-      if(value !== null) {
-        const jsonValue = await JSON.parse(value)
-        setTodoData(jsonValue)
-      }
-    } catch(e) {
-      // error reading value
-    }
+    // try {
+    //   const value = await AsyncStorage.getItem('@todo')
+    //   console.log('là : ' . value)
+    //   if(value !== null) {
+    //     const jsonValue = await JSON.parse(value)
+    //     setTodoData(jsonValue)
+    //   }
+    // } catch(e) {
+    //   // error reading value
+    // }
+    const db = getDatabase();
+    const todosRef = ref(db, 'todos');
+    onValue(todosRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data)
+      setTodoData(data);
+    });
+    // onChildAdded(todosRef, (data) => {
+    //   setTodoData(postElement, data.key, data.val().text, data.val().author);
+    // });
+
+    // onChildChanged(todosRef, (data) => {
+    //   setTodoData(postElement, data.key, data.val().text, data.val().author);
+    // });
+
+    // onChildRemoved(todosRef, (data) => {
+    //   setTodoData(postElement, data.key);
+    // });
   }
 
   useEffect(() => {
