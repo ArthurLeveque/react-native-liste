@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 
-import Home from './pages/home';
+import Home from './pages/Home';
 import Details from './pages/todo/Details';
 import AddTodo from './pages/todo/Add';
 
@@ -27,7 +27,7 @@ export default function App() {
       >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Details" component={Details} />
-        <Stack.Screen name="AddTodo" component={AddTodo} />
+        <Stack.Screen name="AddTodo" component={AddTodo} options={{ headerTitle: 'Add a To-Do' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
