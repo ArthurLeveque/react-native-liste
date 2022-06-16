@@ -1,11 +1,38 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import Storage from 'react-native-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getDatabase, ref, push, set } from "firebase/database";
 
 const AddTodo = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [urgency, setUrgency] = useState('normal');
+
+  const data = {
+    title: title,
+    description: description,
+    urgency: urgency,
+    isDone: false
+  };
+
+  const AddTodo = async () => {
+    const db = getDatabase();
+    const reference = ref(db, 'todos');
+    const newTodo = push(reference);
+    set(newTodo, data);
+    // try {
+    //   const json = JSON.stringify(data);
+    //   await AsyncStorage.setItem(
+    //     '@todo',
+    //     json
+    //   );
+    // } catch (error) {
+    //   // Error saving data
+    // }
+
+  };
 
   return (
     <View style={styles.container}>
@@ -27,7 +54,8 @@ const AddTodo = () => {
           <Picker.Item label="Important" value="important" />
         </Picker>
       </View>
-      <TouchableOpacity style={styles.buttonAdd}>
+
+      <TouchableOpacity style={styles.buttonAdd} onPress={() => AddTodo()}>
         <Text style={styles.textAddButton}>Add +</Text>
       </TouchableOpacity>
     </View>

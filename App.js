@@ -10,6 +10,25 @@ import AddTodo from './pages/todo/Add';
 
 const Stack = createNativeStackNavigator();
 
+import { initializeApp } from 'firebase/app';
+import { getDatabase } from "firebase/database";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyC2hRhxjDHG96UtghsHoxYALIrEj45sKEA",
+  authDomain: "todo-liste-react-native.firebaseapp.com",
+  databaseURL: "https://todo-liste-react-native-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "todo-liste-react-native",
+  storageBucket: "todo-liste-react-native.appspot.com",
+  messagingSenderId: "366060146682",
+  appId: "1:366060146682:web:edd7267b2add78c1cc9e43"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+initializeApp(firebaseConfig);
+
 export default function App() {
   return (
     <NavigationContainer>
