@@ -5,8 +5,11 @@ import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getDatabase, ref, push, set } from "firebase/database";
 import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
+import { getAuth } from "firebase/auth";
 
 const AddTodo = ({navigation}) => {
+  const auth = getAuth();
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [urgency, setUrgency] = useState('normal');
@@ -15,7 +18,8 @@ const AddTodo = ({navigation}) => {
     title: title,
     description: description,
     urgency: urgency,
-    isDone: false
+    isDone: false,
+    userId: auth.currentUser.uid
   };
 
   const AddTodo = async () => {

@@ -50,6 +50,10 @@ const Login = ({navigation}) => {
       <TouchableOpacity style={styles.buttonAdd} onPress={() => signUp()}>
         <Text style={styles.textAddButton}>Log in</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+        <Text style={styles.textAddButton}>No account ? Sign up</Text>
+      </TouchableOpacity>
     </View>
   );
 }
