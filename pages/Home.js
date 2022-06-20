@@ -33,34 +33,13 @@ const Home = ({navigation}) => {
   const [todoData, setTodoData] = useState('');
 
   const onScreenLoad = async () => {
-    // try {
-    //   const value = await AsyncStorage.getItem('@todo')
-    //   console.log('là : ' . value)
-    //   if(value !== null) {
-    //     const jsonValue = await JSON.parse(value)
-    //     setTodoData(jsonValue)
-    //   }
-    // } catch(e) {
-    //   // error reading value
-    // }
     const db = getDatabase();
     const todosRef = ref(db, 'todos');
+    
     onValue(todosRef, (snapshot) => {
       const data = snapshot.val();
-      console.log(data)
-      setTodoData(data);
+      setTodoData(Object.values(data));
     });
-    // onChildAdded(todosRef, (data) => {
-    //   setTodoData(postElement, data.key, data.val().text, data.val().author);
-    // });
-
-    // onChildChanged(todosRef, (data) => {
-    //   setTodoData(postElement, data.key, data.val().text, data.val().author);
-    // });
-
-    // onChildRemoved(todosRef, (data) => {
-    //   setTodoData(postElement, data.key);
-    // });
   }
 
   useEffect(() => {
