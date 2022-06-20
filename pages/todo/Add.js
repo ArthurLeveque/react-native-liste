@@ -4,8 +4,9 @@ import { Picker } from '@react-native-picker/picker';
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getDatabase, ref, push, set } from "firebase/database";
+import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
 
-const AddTodo = () => {
+const AddTodo = ({navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [urgency, setUrgency] = useState('normal');
@@ -18,20 +19,9 @@ const AddTodo = () => {
   };
 
   const AddTodo = async () => {
-    const db = getDatabase();
-    const reference = ref(db, 'todos');
-    const newTodo = push(reference);
-    set(newTodo, data);
-    // try {
-    //   const json = JSON.stringify(data);
-    //   await AsyncStorage.setItem(
-    //     '@todo',
-    //     json
-    //   );
-    // } catch (error) {
-    //   // Error saving data
-    // }
-
+    const db = getFirestore();
+    await addDoc(collection(db, "todos"), data);
+    navigation.goBack();
   };
 
   return (

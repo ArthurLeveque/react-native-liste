@@ -2,6 +2,7 @@ import React, { useState, Component, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue } from "firebase/database";
+import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
 
 import ListItem from '../components/ListItem';
 
@@ -33,13 +34,27 @@ const Home = ({navigation}) => {
   const [todoData, setTodoData] = useState('');
 
   const onScreenLoad = async () => {
-    const db = getDatabase();
-    const todosRef = ref(db, 'todos');
-    
-    onValue(todosRef, (snapshot) => {
-      const data = snapshot.val();
-      setTodoData(Object.values(data));
+    const db = getFirestore();
+    const q = query(collection(db, "todos"));
+
+    const querySnapshot = await getDocs(q);
+    let toDos = [];
+    querySnapshot.forEach((doc) => {
+      let toDo = doc.data();
+      toDo.id = doc.id;
+      toDos.push(toDo);
+      console.log(toDo);
     });
+
+    setTodoData(toDos);
+    // const db = getDatabase();
+    // const todosRef = ref(db, 'todos');
+    
+    // onValue(todosRef, (snapshot) => {
+    //   const data = snapshot.val();
+    //   console.log(Object.values(data))
+    //   setTodoData(Object.values(data));
+    // });
   }
 
   useEffect(() => {
