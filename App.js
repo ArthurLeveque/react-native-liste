@@ -2,11 +2,14 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { getAuth, signOut } from "firebase/auth";
 
 import Home from './pages/Home';
 import Details from './pages/todo/Details';
 import AddTodo from './pages/todo/Add';
+import SignUp from './pages/auth/SignUp';
+import Login from './pages/auth/login';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +32,8 @@ const app = initializeApp(firebaseConfig);
 
 initializeApp(firebaseConfig);
 
+const auth = getAuth();
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -44,7 +49,24 @@ export default function App() {
           headerTitleAlign: 'center'
         }}
       >
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="Home" 
+        component={Home} 
+        options={{
+          headerLeft: null,
+          headerRight: () => (
+            <Button
+              onPress={() => {
+                signOut(auth).then(() => {
+                  navigation.navigate('Login');
+                });
+              }}
+              title="Disconnect"
+              color="#2E323B"
+            />
+          ),
+          }} />
         <Stack.Screen name="Details" component={Details} />
         <Stack.Screen name="AddTodo" component={AddTodo} options={{ headerTitle: 'Add a To-Do' }} />
       </Stack.Navigator>
@@ -58,5 +80,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#2E323B',
     alignItems: 'center',
     justifyContent: 'center',
-  },
+  }
 });
