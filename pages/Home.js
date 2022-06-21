@@ -10,8 +10,10 @@ import ListItem from '../components/ListItem';
 const Home = ({navigation}) => {
   const auth = getAuth();
   const [todoData, setTodoData] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const onScreenLoad = async () => {
+    setLoading(true);
     const db = getFirestore();
     const q = query(collection(db, "todos"), where("userId", "==", auth.currentUser.uid));
 
@@ -24,6 +26,7 @@ const Home = ({navigation}) => {
     });
 
     setTodoData(toDos);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -44,15 +47,20 @@ const Home = ({navigation}) => {
 
   return ( 
     <View style={styles.container}>
+      
       <TouchableOpacity style={styles.buttonAdd} onPress={() => navigation.navigate('AddTodo')}>
         <Text style={styles.textAddButton}>Add +</Text>
       </TouchableOpacity>
-
-      <FlatList
-        data={todoData}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      {loading === false &&
+        <FlatList
+          data={todoData}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      }
+      {loading === true &&
+        <Text style={styles.textAddButton}>Loading...</Text>
+      }
       <StatusBar style="auto" />
     </View>
   );
