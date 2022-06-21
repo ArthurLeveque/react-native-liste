@@ -1,25 +1,34 @@
-import React from 'react';
+import React, { useState, Component, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
 
-const Details = ({route}) => {
+const Details = ({route, navigation}) => {
   const { id, title, description, isDone } = route.params;
+
+  const [tempoIsDone, setTempoIsDone] = useState(false);
+
+  useEffect(() => {
+    setTempoIsDone(isDone);
+  }, [])
 
   const markAsDone = async () => {
     const db = getFirestore();
     const toDoRef = doc(db, 'todos', id);
     setDoc(toDoRef, { isDone: true }, { merge: true });
+    setTempoIsDone(true);
   };
 
   const markAsNotDone = async () => {
     const db = getFirestore();
     const toDoRef = doc(db, 'todos', id);
     setDoc(toDoRef, { isDone: false }, { merge: true });
+    setTempoIsDone(false);
   };
 
   let deleteToDo = async () => {
     const db = getFirestore();
     await deleteDoc(doc(db, "todos", id));
+    navigation.navigate("Home");
   };
 
   return ( 
@@ -30,12 +39,12 @@ const Details = ({route}) => {
           <Text style={styles.textButton}>Delete</Text>
         </TouchableOpacity>
         
-        {isDone === false &&
+        {tempoIsDone === false &&
           <TouchableOpacity style={[styles.button, styles.statusButton]} onPress={() => markAsDone()}>
             <Text style={styles.textButton}>Mark as done</Text>
           </TouchableOpacity>
         }
-        {isDone === true &&
+        {tempoIsDone === true &&
           <TouchableOpacity style={[styles.button, styles.statusButton]} onPress={() => markAsNotDone()}>
             <Text style={styles.textButton}>Not done</Text>
           </TouchableOpacity>

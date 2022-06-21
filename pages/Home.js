@@ -27,8 +27,10 @@ const Home = ({navigation}) => {
   }
 
   useEffect(() => {
+    navigation.addListener('focus', () => {
       onScreenLoad();
-  }, [setTodoData])
+    })
+  }, [])
 
   const renderItem = ({ item }) => (
     <ListItem 
