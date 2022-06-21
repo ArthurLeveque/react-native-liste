@@ -1,5 +1,5 @@
 import React, { useState, Component, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Share } from 'react-native';
 import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
 
 const Details = ({route, navigation}) => {
@@ -31,6 +31,27 @@ const Details = ({route, navigation}) => {
     navigation.navigate("Home");
   };
 
+  const share = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          `${title}
+          ${description}`,
+      });
+      // if (result.action === Share.sharedAction) {
+      //   if (result.activityType) {
+      //     // shared with activity type of result.activityType
+      //   } else {
+      //     // shared
+      //   }
+      // } else if (result.action === Share.dismissedAction) {
+      //   // dismissed
+      // }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return ( 
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -51,6 +72,9 @@ const Details = ({route, navigation}) => {
         }
       </View>
       <Text style={styles.description}>{description}</Text>
+      <TouchableOpacity onPress={() => share()}>
+        <Text>Share</Text>
+      </TouchableOpacity>
     </View>
   );
 }

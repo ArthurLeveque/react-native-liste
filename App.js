@@ -9,7 +9,7 @@ import Home from './pages/Home';
 import Details from './pages/todo/Details';
 import AddTodo from './pages/todo/Add';
 import SignUp from './pages/auth/SignUp';
-import Login from './pages/auth/login';
+import Login from './pages/auth/Login';
 
 const Stack = createNativeStackNavigator();
 
