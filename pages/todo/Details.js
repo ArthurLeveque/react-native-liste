@@ -72,8 +72,8 @@ const Details = ({route, navigation}) => {
         }
       </View>
       <Text style={styles.description}>{description}</Text>
-      <TouchableOpacity onPress={() => share()}>
-        <Text>Share</Text>
+      <TouchableOpacity style={[styles.button, styles.shareButton]} onPress={() => share()}>
+        <Text style={styles.textButton}>Share</Text>
       </TouchableOpacity>
     </View>
   );
@@ -115,6 +115,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '500',
     textAlign: 'center'
+  },
+  shareButton: {
+    width: '100%',
+    marginTop: 20,
+    backgroundColor: '#0066ff'
   }
 });
 
