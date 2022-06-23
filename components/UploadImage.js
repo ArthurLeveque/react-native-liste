@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Image, View, Platform, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { Image, View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
 
-const UploadImage = ({addImage, image}) => {
+const UploadImage = ({addImage, addPhoto, image}) => {
 
 return (
   <View style={imageUploaderStyles.container}>
-    {
-      image  &&<Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+    {image  &&
+      <Image source={{ uri: image }} style={imageUploaderStyles.image} />
     }
 
     <View style={imageUploaderStyles.uploadBtnContainer}>
       <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn} >
-        <Text>{image ? 'Edit' : 'Upload'} Image</Text>
-        <AntDesign name="camera" size={20} color="black" />
+        <AntDesign name="folder1" size={20} color="white" />
+        <Text style={imageUploaderStyles.btnText}>Upload Image</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={addPhoto} style={imageUploaderStyles.uploadBtn} >
+        <AntDesign name="camera" size={20} color="white" />
+        <Text style={imageUploaderStyles.btnText}>Take photo</Text>
       </TouchableOpacity>
     </View>
   </View>
@@ -23,29 +27,30 @@ return (
 
 const imageUploaderStyles=StyleSheet.create({
    container:{
-       elevation:2,
-       height:200,
-       width:200,
-       backgroundColor:'#efefef',
-       position:'relative',
-       borderRadius:999,
-       overflow:'hidden',
-       marginBottom: 20
+    marginBottom: 20
    },
    uploadBtnContainer:{
-       opacity:0.7,
-       position:'absolute',
-       right:0,
-       bottom:0,
-       backgroundColor:'lightgrey',
-       width:'100%',
-       height:'25%',
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'space-between',
    },
    uploadBtn:{
-       display:'flex',
-       alignItems:"center",
-       justifyContent:'center'
-   }
+    padding: 10,
+    borderRadius: 5,
+    width: '45%',
+    backgroundColor: '#0066ff', 
+    flexDirection: 'row',
+    alignContent: 'center'
+   },
+   image: {
+    width: '100%',
+    height: 200,
+    marginBottom: 20
+  },
+  btnText: {
+    color: 'white',
+    marginLeft: 10
+  }
 })
 
 export default UploadImage;

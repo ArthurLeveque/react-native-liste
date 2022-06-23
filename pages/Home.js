@@ -1,8 +1,7 @@
-import React, { useState, Component, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, onValue } from "firebase/database";
-import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
+import { collection, query, where, getDocs,getFirestore } from "firebase/firestore"; 
 import { getAuth } from "firebase/auth";
 
 import ListItem from '../components/ListItem';
@@ -70,16 +69,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#2E323B',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
+    padding: 20
   },
   buttonAdd: {
     backgroundColor: '#0066ff',
-    marginLeft: '3vw',
-    marginRight: '3vw',
-    width: '94vw',
+    width: '100%',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,

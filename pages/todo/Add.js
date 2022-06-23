@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
+import { collection, addDoc, getFirestore } from "firebase/firestore"; 
 import { getAuth } from "firebase/auth";
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import * as ImagePicker from 'expo-image-picker';
@@ -18,6 +18,20 @@ const AddTodo = ({navigation}) => {
 
   const addImage = async () => {
     ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4,3],
+      quality: 1,
+    }).then((_image) => {
+      if (!_image.cancelled) {
+        console.log(_image)
+        setImage(_image.uri);
+      }
+    });
+  }
+
+  const addPhoto = async () => {
+    ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4,3],
@@ -79,7 +93,7 @@ const AddTodo = ({navigation}) => {
         </Picker>
       </View>
 
-      <UploadImage addImage={addImage} image={image} />
+      <UploadImage addImage={addImage} addPhoto={addPhoto} image={image} />
 
       <TouchableOpacity style={styles.buttonAdd} onPress={() => AddTodo()}>
         <Text style={styles.textAddButton}>Add +</Text>

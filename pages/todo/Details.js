@@ -1,6 +1,6 @@
 import React, { useState, Component, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Share, Image } from 'react-native';
-import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
+import { deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
 import { getStorage, ref, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const Details = ({route, navigation}) => {
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     borderRadius: 5,
-    width: '30vw'
+    width: '45%'
   },
   deleteButton: {
     backgroundColor: '#d92626'
