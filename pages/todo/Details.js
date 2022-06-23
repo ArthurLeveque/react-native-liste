@@ -20,7 +20,6 @@ const Details = ({route, navigation}) => {
     const storage = getStorage();
     const reference = ref(storage, image);
     await getDownloadURL(reference).then((URL) => {
-      console.log(URL)
       setImageURL(URL);
     });
   }
@@ -40,12 +39,12 @@ const Details = ({route, navigation}) => {
   };
 
   let deleteToDo = async () => {
-    const db = getFirestore();
     if(image) {
       const storage = getStorage();
       const reference = ref(storage, image);
       await deleteObject(reference)
     }
+    const db = getFirestore();
     await deleteDoc(doc(db, "todos", id));
     
     navigation.navigate("Home");
