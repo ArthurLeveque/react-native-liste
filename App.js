@@ -51,8 +51,9 @@ export default function App() {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" 
         component={Home} 
-        options={{
-          headerLeft: null,
+        options={({navigation}) => ({
+          headerLeft: () => null,
+          headerBackVisible: false,
           headerRight: () => (
             <Button
               onPress={() => {
@@ -64,19 +65,10 @@ export default function App() {
               color="#2E323B"
             />
           ),
-          }} />
+          })} />
         <Stack.Screen name="Details" component={Details} />
         <Stack.Screen name="AddTodo" component={AddTodo} options={{ headerTitle: 'Add a To-Do' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#2E323B',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});

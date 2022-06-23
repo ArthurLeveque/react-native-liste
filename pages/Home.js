@@ -7,6 +7,10 @@ import ListItem from '../components/ListItem';
 
 const Home = ({navigation}) => {
   const auth = getAuth();
+  if (!auth.currentUser) {
+    navigation.navigate("Login");
+  }
+
   const [todoData, setTodoData] = useState('');
   const [loading, setLoading] = useState(true);
   const [tasksDone, setTasksDone] = useState(0);
