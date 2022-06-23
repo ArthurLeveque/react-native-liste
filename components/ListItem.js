@@ -25,14 +25,15 @@ const getUrgencyStyle = (urgency) => {
   }
  }
 
-const ListItem = ({ id, title, description, isDone, urgency, navigation }) => {
+const ListItem = ({ id, title, description, isDone, urgency, image, navigation }) => {
   return ( 
     <TouchableOpacity style={[styles.item, getUrgencyStyle(urgency)]} 
       onPress={() => navigation.navigate('Details', {
         id: id,
         title: title,
         description: description,
-        isDone: isDone
+        isDone: isDone,
+        image: image
       })}
     >
       <Text style={styles.title}>{ title }</Text>

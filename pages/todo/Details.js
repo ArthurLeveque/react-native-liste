@@ -1,15 +1,29 @@
 import React, { useState, Component, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Share } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Share, Image } from 'react-native';
 import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
+import { getStorage, ref, getDownloadURL, deleteObject } from 'firebase/storage';
 
 const Details = ({route, navigation}) => {
-  const { id, title, description, isDone } = route.params;
+  const { id, title, description, isDone, image } = route.params;
 
   const [tempoIsDone, setTempoIsDone] = useState(false);
+  const [imageURL, setImageURL] = useState();
 
   useEffect(() => {
     setTempoIsDone(isDone);
+    if(image) {
+      getImage();
+    }
   }, [])
+
+  const getImage = async () => {
+    const storage = getStorage();
+    const reference = ref(storage, image);
+    await getDownloadURL(reference).then((URL) => {
+      console.log(URL)
+      setImageURL(URL);
+    });
+  }
 
   const markAsDone = async () => {
     const db = getFirestore();
@@ -27,7 +41,13 @@ const Details = ({route, navigation}) => {
 
   let deleteToDo = async () => {
     const db = getFirestore();
+    if(image) {
+      const storage = getStorage();
+      const reference = ref(storage, image);
+      await deleteObject(reference)
+    }
     await deleteDoc(doc(db, "todos", id));
+    
     navigation.navigate("Home");
   };
 
@@ -72,6 +92,11 @@ const Details = ({route, navigation}) => {
         }
       </View>
       <Text style={styles.description}>{description}</Text>
+      
+      {image && 
+        <Image style={styles.image} source={{uri: imageURL}} />
+      }
+
       <TouchableOpacity style={[styles.button, styles.shareButton]} onPress={() => share()}>
         <Text style={styles.textButton}>Share</Text>
       </TouchableOpacity>
@@ -98,7 +123,8 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   description: {
-    color: 'white'
+    color: 'white',
+    marginBottom: 20
   },
   button: {
     padding: 10,
@@ -118,8 +144,13 @@ const styles = StyleSheet.create({
   },
   shareButton: {
     width: '100%',
-    marginTop: 20,
     backgroundColor: '#0066ff'
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    maxHeight: 300,
+    marginBottom: 20
   }
 });
 

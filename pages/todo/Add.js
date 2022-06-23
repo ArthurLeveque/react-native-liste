@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
 import { getAuth } from "firebase/auth";
@@ -15,20 +15,19 @@ const AddTodo = ({navigation}) => {
   const [description, setDescription] = useState('');
   const [urgency, setUrgency] = useState('normal');
   const [image, setImage] = useState(null);
-  const [imageFilename, setImageFilename] = useState(null);
 
   const addImage = async () => {
-    let _image = await ImagePicker.launchImageLibraryAsync({
+    ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4,3],
       quality: 1,
+    }).then((_image) => {
+      if (!_image.cancelled) {
+        console.log(_image)
+        setImage(_image.uri);
+      }
     });
-
-    if (!_image.cancelled) {
-      setImage(_image.uri);
-      setImageFilename(_image.fileName);
-    }
   }
 
   const data = {
@@ -42,13 +41,15 @@ const AddTodo = ({navigation}) => {
   const AddTodo = async () => {
     if(image) {
       const storage = getStorage();
-      console.log(imageFilename)
-      const reference = ref(storage, 'file.png');
+      //Pour créer une image avec un nom unique
+      const fileName = (new Date()).getTime() + '-' +  Math.random().toString(16).slice(2);
+      const reference = ref(storage, fileName);
 
-      const img = await fetch(image.uri);
+      const img = await fetch(image);
       const bytes = await img.blob();
 
-      await uploadBytes(reference, bytes);
+      const imageUploaded = await uploadBytes(reference, bytes);
+      data.image = imageUploaded.metadata.fullPath;
     }
 
     const db = getFirestore();

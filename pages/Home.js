@@ -42,6 +42,7 @@ const Home = ({navigation}) => {
     description={item.description}
     isDone={item.isDone}
     urgency={item.urgency} 
+    image={item.image}
     navigation={navigation} />
   );
 
