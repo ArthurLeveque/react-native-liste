@@ -1,10 +1,5 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import Storage from 'react-native-storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getDatabase, ref, push, set } from "firebase/database";
-import { collection, addDoc, query, where, getDocs, deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, onAuthStateChanged } from "firebase/auth";
 
 const SignUp = ({navigation}) => {
@@ -26,14 +21,20 @@ const SignUp = ({navigation}) => {
 
   const signUp = async () => {
     if (password === verifyPassword) {
-      createUserWithEmailAndPassword(auth, mail, password)
-      .then((userCredential) => {
-        sendEmailVerification(auth.currentUser);
-        navigation.navigate("Home", { user: userCredential.user });
-      })
-      .catch((error) => {
-        setValidationMessage(error.message);
-      });
+      if(mail.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+        createUserWithEmailAndPassword(auth, mail, password)
+        .then((userCredential) => {
+          sendEmailVerification(auth.currentUser);
+          navigation.navigate("Home", { user: userCredential.user });
+        })
+        .catch((error) => {
+          setValidationMessage(error.message);
+        });
+      } else {
+        alert('The mail must be correct !');
+      }
+    } else {
+      alert('The password and the confirmation password must be the same !');
     }
   };
 
@@ -55,7 +56,7 @@ const SignUp = ({navigation}) => {
       </View>
       
       <TouchableOpacity style={styles.buttonAdd} onPress={() => signUp()}>
-        <Text style={styles.textAddButton}>Add +</Text>
+        <Text style={styles.textAddButton}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );

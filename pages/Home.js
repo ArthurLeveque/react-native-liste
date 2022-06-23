@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { collection, query, where, getDocs,getFirestore } from "firebase/firestore"; 
 import { getAuth } from "firebase/auth";
 
@@ -10,6 +9,7 @@ const Home = ({navigation}) => {
   const auth = getAuth();
   const [todoData, setTodoData] = useState('');
   const [loading, setLoading] = useState(true);
+  const [tasksDone, setTasksDone] = useState(0);
 
   const onScreenLoad = async () => {
     setLoading(true);
@@ -25,6 +25,15 @@ const Home = ({navigation}) => {
     });
 
     setTodoData(toDos);
+
+    var numberTasksDone = 0;
+    for (var index = 0; index < toDos.length; index++) {
+      if (toDos[index].isDone === true) {
+        numberTasksDone++;
+      }
+    }
+    setTasksDone(numberTasksDone)
+
     setLoading(false);
   }
 
@@ -52,16 +61,18 @@ const Home = ({navigation}) => {
         <Text style={styles.textAddButton}>Add +</Text>
       </TouchableOpacity>
       {loading === false &&
-        <FlatList
-          data={todoData}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        <View>
+          <Text style={styles.textTasksDone}>You have {tasksDone} {tasksDone <= 1 ? 'task' : 'tasks'} done out of {todoData.length}</Text>
+          <FlatList
+            data={todoData}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </View>
       }
       {loading === true &&
         <Text style={styles.textAddButton}>Loading...</Text>
       }
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -82,6 +93,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '500',
     textAlign: 'center'
+  },
+  textTasksDone: {
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 10
   }
 });
 

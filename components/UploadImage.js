@@ -26,30 +26,31 @@ return (
 }
 
 const imageUploaderStyles=StyleSheet.create({
-   container:{
+  container:{
     marginBottom: 20
    },
-   uploadBtnContainer:{
+  uploadBtnContainer:{
     flexDirection: 'row',
     alignContent: 'center',
     justifyContent: 'space-between',
    },
-   uploadBtn:{
+  uploadBtn:{
     padding: 10,
     borderRadius: 5,
     width: '45%',
     backgroundColor: '#0066ff', 
     flexDirection: 'row',
-    alignContent: 'center'
+    alignContent: 'center',
+    justifyContent: 'center'
    },
-   image: {
+  image: {
     width: '100%',
     height: 200,
     marginBottom: 20
   },
   btnText: {
     color: 'white',
-    marginLeft: 10
+    marginLeft: 10,
   }
 })
 

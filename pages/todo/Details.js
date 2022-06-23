@@ -1,4 +1,4 @@
-import React, { useState, Component, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Share, Image } from 'react-native';
 import { deleteDoc, doc, setDoc, getFirestore } from "firebase/firestore"; 
 import { getStorage, ref, getDownloadURL, deleteObject } from 'firebase/storage';
@@ -52,20 +52,11 @@ const Details = ({route, navigation}) => {
 
   const share = async () => {
     try {
-      const result = await Share.share({
+      await Share.share({
         message:
           `${title}
           ${description}`,
       });
-      // if (result.action === Share.sharedAction) {
-      //   if (result.activityType) {
-      //     // shared with activity type of result.activityType
-      //   } else {
-      //     // shared
-      //   }
-      // } else if (result.action === Share.dismissedAction) {
-      //   // dismissed
-      // }
     } catch (error) {
       alert(error.message);
     }

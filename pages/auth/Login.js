@@ -25,9 +25,9 @@ const Login = ({navigation}) => {
       setMail("");
       setPassword("");
     })
-    // .catch((error) => {
-    //   setErrorMessage(error.message)
-    // });
+    .catch(() => {
+      alert('the informations provided are invalid')
+    });
   };
 
   return (

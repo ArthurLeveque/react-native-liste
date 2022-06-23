@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { StyleSheet, Button } from 'react-native';
 import { getAuth, signOut } from "firebase/auth";
 
 import Home from './pages/Home';
@@ -14,7 +13,6 @@ import Login from './pages/auth/Login';
 const Stack = createNativeStackNavigator();
 
 import { initializeApp } from 'firebase/app';
-import { getDatabase } from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
